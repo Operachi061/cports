@@ -10,7 +10,7 @@ hostmakedepends = [
     "numactl-libs",
     "perl"
 ]
-depends = ["gmp-devel", "libffi8", "numactl-libs", "perl"]
+depends = ["libffi8", "numactl-libs", "perl"]
 pkgdesc = "Glorious Glasgow Haskell Compiler"
 license = "BSD-3-Clause"
 url = "http://www.haskell.org/ghc"
@@ -24,7 +24,12 @@ def build(self):
 
 def post_install(self):
     for slib in self.find(self.destdir, "*.a"):
-        self.rm(slib)
+        print(slib)
 
     self.install_license(f"share/doc/x86_64-linux-ghc-{pkgver}/ghc-{pkgver}/LICENSE")
 
+
+@subpackage("ghc-static")
+def _(self):
+    # /home/bartlomiej/repositories/tool/cports/bldroot/destdir/ghc-9.10.2/ghc/usr/lib/ghc-9.10.2/lib/x86_64-linux-ghc-9.10.2/rts-1.0.2/libCffi_debug_p.a
+    return [f"usr/lib/ghc-{pkgver}/lib/*-linux-ghc-{pkgver}"]
